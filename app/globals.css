@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 60, 35, 23;
+  --background-start-rgb: 255, 250, 245;
+  --background-end-rgb: 255, 253, 250;
+}
+
+@layer base {
+  :root {
+    --background: 40 30% 98%;
+    --foreground: 25 30% 16%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 25 30% 16%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 25 30% 16%;
+    
+    --primary: 35 85% 55%;
+    --primary-foreground: 25 30% 16%;
+    
+    --secondary: 15 40% 95%;
+    --secondary-foreground: 25 30% 20%;
+    
+    --muted: 15 20% 96%;
+    --muted-foreground: 25 15% 40%;
+    
+    --accent: 355 80% 90%;
+    --accent-foreground: 355 80% 30%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 25 15% 90%;
+    --input: 25 15% 90%;
+    --ring: 35 85% 55%;
+    
+    --radius: 0.5rem;
+  }
+  
+  .dark {
+    --background: 25 30% 8%;
+    --foreground: 25 10% 95%;
+    
+    --card: 25 30% 10%;
+    --card-foreground: 25 10% 95%;
+    
+    --popover: 25 30% 10%;
+    --popover-foreground: 25 10% 95%;
+    
+    --primary: 35 85% 55%;
+    --primary-foreground: 25 30% 8%;
+    
+    --secondary: 15 30% 15%;
+    --secondary-foreground: 25 10% 95%;
+    
+    --muted: 15 30% 15%;
+    --muted-foreground: 25 10% 65%;
+    
+    --accent: 355 80% 30%;
+    --accent-foreground: 355 80% 90%;
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 25 30% 20%;
+    --input: 25 30% 20%;
+    --ring: 35 85% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-playfair;
+  }
+  p, span, a, button, input, textarea, li {
+    @apply font-poppins;
+  }
+}
+
+/* Custom classes */
+.hero-gradient {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2));
+}
+
+.section-padding {
+  @apply py-16 md:py-24;
+}
+
+.text-gradient {
+  background: linear-gradient(to right, hsl(var(--primary)), hsl(var(--accent-foreground)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.menu-card {
+  @apply relative overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-300 hover:shadow-lg border border-border/50;
+}
+
+.menu-card:hover img {
+  @apply scale-105;
+}
+
+.menu-card img {
+  @apply transition-transform duration-500;
+}
