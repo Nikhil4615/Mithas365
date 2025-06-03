@@ -55,8 +55,8 @@ export default function Contact() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Contact Form */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, transform: "translateX(-20px)" }}
+            animate={{ opacity: 1, transform: "translateX(0px)" }}
             transition={{ duration: 0.5 }}
             className="bg-card rounded-xl p-8 shadow-md border border-border/50"
           >
@@ -164,8 +164,8 @@ export default function Contact() {
           
           {/* Contact Information */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, transform: "translateX(20px)" }}
+            animate={{ opacity: 1, transform: "translateX(0px)" }}
             transition={{ duration: 0.5, delay: 0.2 }}
             className="space-y-8"
           >
