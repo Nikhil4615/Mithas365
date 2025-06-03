@@ -233,6 +233,8 @@ const menuData = {
 export default function MenuPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 14;
 
   const categories = ["All", ...Object.keys(menuData)];
 
@@ -268,17 +270,53 @@ export default function MenuPage() {
   };
 
   const filteredItems = getFilteredItems();
+  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = filteredItems.slice(startIndex, endIndex);
+
+  // Reset to page 1 when filters change
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    setCurrentPage(1);
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+    setCurrentPage(1);
+  };
+
+  const generatePageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        pages.push(1, 2, 3, 4, "...", totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1, "...", totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+      } else {
+        pages.push(1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages);
+      }
+    }
+    
+    return pages;
+  };
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
       <div className="bg-primary/5 border-b border-border">
-        <div className="container py-6">
+        <div className="container py-8">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-4">
-              <Link href="/" className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors">
-                <ArrowLeft className="h-5 w-5 mr-2" />
-                Back to Home
+              <Link href="/" className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors group">
+                <ArrowLeft className="h-5 w-5 mr-2 transition-transform group-hover:-translate-x-1" />
+                <span className="font-medium">Back to Home</span>
               </Link>
             </div>
           </div>
@@ -305,7 +343,7 @@ export default function MenuPage() {
               type="text"
               placeholder="Search dishes..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => handleSearchChange(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
             />
           </div>
@@ -315,7 +353,7 @@ export default function MenuPage() {
             {categories.map((category) => (
               <button
                 key={category}
-                onClick={() => setSelectedCategory(category)}
+                onClick={() => handleCategoryChange(category)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all hover:scale-105 ${
                   selectedCategory === category
                     ? "bg-primary text-primary-foreground shadow-lg"
@@ -328,27 +366,32 @@ export default function MenuPage() {
           </div>
         </div>
 
-        {/* Results Count */}
-        <div className="mb-6">
+        {/* Results Count and Pagination Info */}
+        <div className="flex items-center justify-between mb-6">
           <p className="text-muted-foreground">
-            Showing {filteredItems.length} item{filteredItems.length !== 1 ? 's' : ''}
+            Showing {startIndex + 1}-{Math.min(endIndex, filteredItems.length)} of {filteredItems.length} item{filteredItems.length !== 1 ? 's' : ''}
             {selectedCategory !== "All" && ` in ${selectedCategory}`}
             {searchTerm && ` matching "${searchTerm}"`}
           </p>
+          {totalPages > 1 && (
+            <p className="text-sm text-muted-foreground">
+              Page {currentPage} of {totalPages}
+            </p>
+          )}
         </div>
 
-        {/* Menu Items Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredItems.map((item, index) => (
+        {/* Menu Items Grid - Smaller Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 gap-4">
+          {currentItems.map((item, index) => (
             <motion.div
-              key={`${item.category}-${index}`}
+              key={`${item.category}-${startIndex + index}`}
               initial={{ opacity: 0, transform: "translateY(20px)" }}
               animate={{ opacity: 1, transform: "translateY(0px)" }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
-              className="bg-card rounded-2xl shadow-sm border border-border overflow-hidden hover:shadow-lg transition-all duration-300 group"
+              transition={{ duration: 0.3, delay: index * 0.03 }}
+              className="bg-card rounded-xl shadow-sm border border-border overflow-hidden hover:shadow-lg transition-all duration-300 group"
             >
-              {/* Image */}
-              <div className="relative h-48 overflow-hidden">
+              {/* Image - Smaller */}
+              <div className="relative h-32 overflow-hidden">
                 <Image
                   src={item.image}
                   alt={item.name}
@@ -356,33 +399,27 @@ export default function MenuPage() {
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                <div className="absolute top-3 left-3">
-                  <span className="px-2 py-1 rounded-full text-xs font-medium bg-primary text-primary-foreground">
+                <div className="absolute top-2 left-2">
+                  <span className="px-1.5 py-0.5 rounded text-xs font-medium bg-primary text-primary-foreground">
                     {item.category}
                   </span>
                 </div>
-                <div className="absolute bottom-3 right-3">
-                  <span className="px-3 py-1 rounded-full text-lg font-bold bg-white/90 text-primary">
+                <div className="absolute bottom-2 right-2">
+                  <span className="px-2 py-1 rounded text-sm font-bold bg-white/90 text-primary">
                     {item.price}
                   </span>
                 </div>
               </div>
 
-              {/* Content */}
-              <div className="p-5">
-                <h3 className="text-lg font-bold text-foreground mb-1 group-hover:text-primary transition-colors">
+              {/* Content - Compact */}
+              <div className="p-3">
+                <h3 className="text-sm font-semibold text-foreground mb-1 group-hover:text-primary transition-colors line-clamp-1">
                   {item.name}
                 </h3>
-                <p className="text-sm text-muted-foreground mb-2">{item.hindi}</p>
-                <p className="text-sm text-muted-foreground/80 line-clamp-2">
+                <p className="text-xs text-muted-foreground mb-2 line-clamp-1">{item.hindi}</p>
+                <p className="text-xs text-muted-foreground/80 line-clamp-2">
                   {item.description}
                 </p>
-                
-                <div className="mt-4 pt-4 border-t border-border">
-                  <Button className="w-full" size="sm">
-                    Add to Order
-                  </Button>
-                </div>
               </div>
             </motion.div>
           ))}
@@ -399,9 +436,53 @@ export default function MenuPage() {
             <Button onClick={() => {
               setSearchTerm("");
               setSelectedCategory("All");
+              setCurrentPage(1);
             }}>
               Clear Filters
             </Button>
+          </div>
+        )}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="mt-12 flex items-center justify-center space-x-2">
+            {/* Previous Button */}
+            <button
+              onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+              disabled={currentPage === 1}
+              className="px-3 py-2 rounded-lg border border-border text-sm font-medium hover:bg-muted transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Previous
+            </button>
+
+            {/* Page Numbers */}
+            {generatePageNumbers().map((pageNum, index) => (
+              <div key={index}>
+                {pageNum === "..." ? (
+                  <span className="px-3 py-2 text-sm text-muted-foreground">...</span>
+                ) : (
+                  <button
+                    onClick={() => setCurrentPage(pageNum as number)}
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      currentPage === pageNum
+                        ? "bg-primary text-primary-foreground shadow-sm"
+                        : "border border-border hover:bg-muted"
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                )}
+              </div>
+            ))}
+
+            {/* Next Button */}
+            <button
+              onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+              disabled={currentPage === totalPages}
+              className="px-3 py-2 rounded-lg border border-border text-sm font-medium hover:bg-muted transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Next
+            </button>
           </div>
         )}
 

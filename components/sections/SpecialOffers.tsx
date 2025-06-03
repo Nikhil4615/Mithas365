@@ -142,10 +142,6 @@ export default function SpecialOffers() {
                 </button>
               ))}
             </div>
-            
-            <Button size="lg">
-              View All Specials
-            </Button>
           </div>
         </div>
       </div>

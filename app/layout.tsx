@@ -1,9 +1,9 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Playfair_Display, Poppins } from 'next/font/google';
-import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { ThemeProvider } from '@/components/theme-provider';
+import ConditionalHeader from '@/components/layout/ConditionalHeader';
 
 const playfair = Playfair_Display({ 
   subsets: ['latin'],
@@ -37,7 +37,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
+          <ConditionalHeader />
           <main>{children}</main>
           <Footer />
         </ThemeProvider>

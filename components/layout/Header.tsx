@@ -7,9 +7,9 @@ import { Phone, Menu, X, Instagram, Facebook } from "lucide-react";
 
 const navItems = [
   { name: "Home", href: "/" },
-  { name: "About", href: "/#about" },
+  { name: "About", href: "/about" },
   { name: "Menu", href: "/menu" },
-  { name: "Gallery", href: "/#gallery" },
+  { name: "Gallery", href: "/gallery" },
   { name: "Contact", href: "/#contact" },
 ];
 
@@ -52,6 +52,7 @@ export default function Header() {
   const handleNavClick = (href: string) => {
     setIsMenuOpen(false);
     
+    // Only handle anchor links for smooth scrolling, let regular routes navigate normally
     if (href.startsWith("/#")) {
       const elementId = href.substring(2);
       const element = document.getElementById(elementId);
@@ -111,7 +112,10 @@ export default function Header() {
                   key={item.name}
                   href={item.href}
                   onClick={(e) => {
-                    e.preventDefault();
+                    // Only prevent default for anchor links, not regular routes
+                    if (item.href.startsWith("/#")) {
+                      e.preventDefault();
+                    }
                     handleNavClick(item.href);
                   }}
                   className={`relative text-sm font-medium transition-all duration-300 hover:scale-105 ${
@@ -207,7 +211,10 @@ export default function Header() {
                   key={item.name}
                   href={item.href}
                   onClick={(e) => {
-                    e.preventDefault();
+                    // Only prevent default for anchor links, not regular routes
+                    if (item.href.startsWith("/#")) {
+                      e.preventDefault();
+                    }
                     handleNavClick(item.href);
                   }}
                   className={`block px-4 py-4 text-xl font-medium rounded-lg transition-all duration-200 ${
