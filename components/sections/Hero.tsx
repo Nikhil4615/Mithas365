@@ -66,11 +66,12 @@ export default function Hero() {
               variant="outline" 
               size="lg"
               className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 font-medium text-base w-full sm:w-auto"
-              onClick={() => {
-                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-              }}
+              asChild
             >
-              Contact Us
+              <a href="/contact">
+                Contact Us
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </a>
             </Button>
           </div>
         </motion.div>

@@ -2,35 +2,23 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Clock, Users, Award, Heart } from "lucide-react";
+import { Clock, Users, Award, Heart } from "lucide-react";
 import { motion } from "@/lib/motion";
 import { Button } from "@/components/ui/button";
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="bg-primary/5 border-b border-border">
-        <div className="container py-8">
-          <div className="flex items-center justify-between mb-6">
-            <Link href="/" className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors group">
-              <ArrowLeft className="h-5 w-5 mr-2 transition-transform group-hover:-translate-x-1" />
-              <span className="font-medium">Back to Home</span>
-            </Link>
-          </div>
-          
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              About <span className="text-primary">Mithas 365</span>
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Discover the passion, tradition, and culinary excellence that defines our journey in bringing authentic flavors to your table.
-            </p>
-          </div>
-        </div>
-      </div>
-
       <div className="container py-16">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+            About <span className="text-primary">Mithas 365</span>
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Discover the passion, tradition, and culinary excellence that defines our journey in bringing authentic flavors to your table.
+          </p>
+        </div>
+        
         {/* Our Story Section */}
         <motion.section
           initial={{ opacity: 0, transform: "translateY(30px)" }}

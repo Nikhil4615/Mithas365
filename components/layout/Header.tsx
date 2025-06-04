@@ -10,13 +10,16 @@ const navItems = [
   { name: "About", href: "/about" },
   { name: "Menu", href: "/menu" },
   { name: "Gallery", href: "/gallery" },
-  { name: "Contact", href: "/#contact" },
+  { name: "Contact", href: "/contact" },
 ];
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+
+  // Check if we're on the home page
+  const isHomePage = pathname === "/";
 
   // Handle scroll effect
   useEffect(() => {
@@ -67,17 +70,20 @@ export default function Header() {
     }
   };
 
+  // Determine if navbar should have background
+  const shouldHaveBackground = !isHomePage || isScrolled;
+
   return (
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out ${
-          isScrolled
+          shouldHaveBackground
             ? "bg-white/95 backdrop-blur-md shadow-xl border-b border-gray-100"
             : "bg-transparent"
         }`}
         style={{
-          backdropFilter: isScrolled ? "blur(20px)" : "none",
-          WebkitBackdropFilter: isScrolled ? "blur(20px)" : "none",
+          backdropFilter: shouldHaveBackground ? "blur(20px)" : "none",
+          WebkitBackdropFilter: shouldHaveBackground ? "blur(20px)" : "none",
         }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -90,12 +96,12 @@ export default function Header() {
               onClick={() => setIsMenuOpen(false)}
             >
               <div className={`text-2xl font-bold tracking-tight transition-all duration-300 ${
-                isScrolled || isMenuOpen 
+                shouldHaveBackground || isMenuOpen 
                   ? "text-foreground" 
                   : "text-white drop-shadow-lg"
               }`}>
                 <span className={`${
-                  isScrolled || isMenuOpen 
+                  shouldHaveBackground || isMenuOpen 
                     ? "text-primary" 
                     : "text-primary/90"
                 }`}>
@@ -119,7 +125,7 @@ export default function Header() {
                     handleNavClick(item.href);
                   }}
                   className={`relative text-sm font-medium transition-all duration-300 hover:scale-105 ${
-                    isScrolled
+                    shouldHaveBackground
                       ? "text-foreground/90 hover:text-foreground"
                       : "text-white hover:text-white/90"
                   } ${
@@ -139,7 +145,7 @@ export default function Header() {
               <Link
                 href="tel:+919111930000"
                 className={`flex items-center space-x-2 text-sm font-medium transition-all duration-300 hover:scale-105 ${
-                  isScrolled 
+                  shouldHaveBackground 
                     ? "text-foreground/90 hover:text-primary" 
                     : "text-white hover:text-white/90"
                 }`}
@@ -150,7 +156,7 @@ export default function Header() {
               
               <button
                 className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg ${
-                  isScrolled
+                  shouldHaveBackground
                     ? "bg-primary text-primary-foreground hover:bg-primary/90"
                     : "bg-white/20 text-white border border-white/30 hover:bg-white/30 backdrop-blur-sm"
                 }`}
@@ -163,7 +169,7 @@ export default function Header() {
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className={`lg:hidden z-50 p-2 transition-all duration-300 ${
-                isScrolled || isMenuOpen ? "text-foreground" : "text-white"
+                shouldHaveBackground || isMenuOpen ? "text-foreground" : "text-white"
               }`}
               aria-label="Toggle menu"
             >

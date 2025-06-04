@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import { motion } from "@/lib/motion";
 
 // Gallery images data
@@ -159,30 +157,18 @@ export default function GalleryPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="bg-primary/5 border-b border-border">
-        <div className="container py-8">
-          <div className="flex items-center justify-between mb-6">
-            <Link href="/" className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors group">
-              <ArrowLeft className="h-5 w-5 mr-2 transition-transform group-hover:-translate-x-1" />
-              <span className="font-medium">Back to Home</span>
-            </Link>
-          </div>
-          
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              Food <span className="text-primary">Gallery</span>
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              A visual feast showcasing our delicious creations, authentic flavors, 
-              and the artistry behind every dish we serve.
-            </p>
-          </div>
-        </div>
-      </div>
-
       {/* Gallery Grid */}
       <div className="container py-8">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+            Food <span className="text-primary">Gallery</span>
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            A visual feast showcasing our delicious creations, authentic flavors, 
+            and the artistry behind every dish we serve.
+          </p>
+        </div>
+        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {galleryImages.map((image, index) => (
             <motion.div
