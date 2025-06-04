@@ -7,7 +7,7 @@ import { ArrowRight } from "lucide-react";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[100dvh] w-full overflow-hidden">
+    <section className="relative min-h-screen w-full overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -36,7 +36,7 @@ export default function Hero() {
       </div>
 
       {/* Content */}
-      <div className="container relative z-10 min-h-[100dvh] flex flex-col justify-center items-center text-center py-20">
+      <div className="container relative z-10 min-h-screen flex flex-col justify-center items-center text-center py-20">
         <motion.div
           initial={{ opacity: 0, transform: "translateY(30px)" }}
           animate={{ opacity: 1, transform: "translateY(0px)" }}
@@ -78,7 +78,7 @@ export default function Hero() {
 
         {/* Enhanced scroll indicator */}
         <motion.div 
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          className="absolute bottom-8 left-0 right-0 flex justify-center"
           initial={{ opacity: 0, transform: "translateY(20px)" }}
           animate={{ opacity: 1, transform: "translateY(0px)" }}
           transition={{ duration: 0.6, delay: 1.2 }}
